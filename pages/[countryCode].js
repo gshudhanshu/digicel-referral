@@ -1,4 +1,4 @@
-import { getReferrals, createReferral } from '../utils/actions.js'
+import { getReferrals } from '../utils/actions.js'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -139,7 +139,7 @@ function leaderboard({ referrals }) {
 
 export async function getServerSideProps(context) {
   const countryCode = context.params.countryCode
-  const referrals = JSON.parse(JSON.stringify(await getReferrals()))
+  const referrals = JSON.parse(JSON.stringify(await getReferrals(countryCode)))
   return {
     props: { referrals },
   }

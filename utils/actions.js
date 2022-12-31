@@ -2,9 +2,22 @@ import dbConnect from '../utils/dbConnect'
 import { Referral } from '../models/Referral.js'
 
 // get all Referrals
-export const getReferrals = async (countryCode) => {
-  // return await Referral.find({})
-}
+export const getReferrals = async (countryCode) =>
+  await Referral.aggregate([
+    { $unwind: { path: '$campaign' } },
+    { $match: { 'campaign.name': countryCode } },
+    {
+      $setWindowFields: {
+        partitionBy: '$campaign_id',
+        sortBy: { reach: -1 },
+        output: {
+          denseRankReach: {
+            $denseRank: {},
+          },
+        },
+      },
+    },
+  ])
 
 // get a single Referral
 export const getReferral = async (id) => await Referral.findById(id)
