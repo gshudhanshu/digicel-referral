@@ -1,0 +1,218 @@
+/*Top 3 results*/
+
+.hunters_container .emoji > span {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  object-fit: contain;
+  width: 3em;
+  height: 3em;
+  bottom: 0;
+  left: -1.5em;
+  transform: rotate(-20deg);
+  filter: drop-shadow(5px 5px 5px #fafafa);
+}
+
+.leaderboard {
+  color: #fff;
+}
+
+.search_input {
+  background: #fff !important;
+}
+
+.search_button {
+  // background: #fff !important;
+  // color: crimson;
+  border: 1px solid #fff !important;
+}
+
+.search_button:hover {
+  background: #fff !important;
+  color: crimson;
+}
+
+.search_result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+
+.rank {
+  display: flex;
+  position: relative;
+  font-weight: 500;
+  font-size: 2em;
+  text-align: right;
+  color: #fff;
+  margin-right: 0.75em;
+  line-height: 0;
+}
+
+.gold .rank {
+  font-size: 3.5em;
+  font-weight: 900;
+}
+
+.gold p {
+  font-size: 1.6em;
+  font-weight: 900;
+}
+
+.hunters_container.gold .emoji > span {
+  background-image: url('/asset/gold-trophy.png');
+}
+
+.silver .rank {
+  font-size: 2.5em;
+}
+
+.silver p {
+  font-size: 1.4em;
+}
+
+.hunters_container.silver .emoji > span {
+  background-image: url('/asset/silver-trophy.png');
+}
+
+.hunters_container.bronze .emoji > span {
+  background-image: url('/asset/bronze-trophy.png');
+}
+
+.hunters_container.gold {
+  width: 100%;
+  max-width: 50em;
+}
+.hunters_container.silver {
+  width: 90%;
+  max-width: 45em;
+}
+
+.hunters_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  max-width: 40em;
+  margin-bottom: 2em !important;
+  margin-top: 0 !important;
+}
+
+.text_content {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  align-items: center;
+  width: 100%;
+  /*grid-gap: 2em;*/
+  justify-content: space-around;
+}
+
+.name_phone {
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
+}
+
+.emoji_name_phone_eggs {
+  display: grid;
+  grid-template-columns: min-content auto;
+  width: 100%;
+  background-color: #fafafa;
+  align-items: center;
+  border-radius: 50em;
+  /*grid-gap: 1.2em;*/
+  padding: 0 2em 0 0;
+  position: relative;
+}
+
+.emoji_name_phone_eggs p {
+  color: #2b2b2b;
+}
+
+.text_content .eggs {
+  text-align: right;
+}
+
+.emoji_name_phone_eggs .emoji {
+  width: 3em;
+  height: 3em;
+  border-radius: 50em;
+  background-color: #e7e7e7;
+  margin: 0.4em 0 0.4em 0.4em;
+}
+
+.leaderboard_pagination_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  /*grid-gap: 0.7em;*/
+  justify-content: center;
+  /*margin-top: 2.5em;*/
+}
+
+/*Media query for less than 1200px*/
+@media only screen and (max-width: 1200px) {
+  section.leaderboard > header > div {
+    margin-bottom: 1.5em;
+  }
+
+  .text_content {
+    font-size: 1em;
+    /*grid-gap: 1em;*/
+  }
+
+  .leaderboard_search_result {
+    display: flex;
+    align-items: center;
+  }
+
+  .leaderboard_search_result .gold p,
+    .leaderboard_search_result .silver p
+    /*section.leaderboard p*/ {
+    font-size: 1.3em;
+  }
+}
+
+/*Media query for less than 800px*/
+@media only screen and (max-width: 800px) {
+  .leaderboard {
+    font-size: 15px;
+    padding: 10%;
+  }
+
+  .leaderboard_search_result .gold .rank,
+  .leaderboard_search_result .silver .rank {
+    font-size: 2em;
+  }
+
+  .hunters_container,
+  .hunters_container.silver,
+  .hunters_container.gold {
+    width: 100%;
+    max-width: unset;
+  }
+
+  .text-content {
+    grid-template-columns: 5fr 2fr;
+  }
+
+  .leaderboard_search_result .gold p,
+  .leaderboard_search_result .silver p,
+  .leaderboard p {
+    font-size: 1em;
+  }
+}
+
+/*Media query for less than 600px*/
+@media only screen and (max-width: 600px) {
+  .leaderboard {
+    font-size: 12px;
+    padding: 10%;
+  }
+}
+
+/*Media query for less than 450px*/
+@media only screen and (max-width: 450px) {
+  .leaderboard {
+    font-size: 11px;
+    padding: 10%;
+  }
+}

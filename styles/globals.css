@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Hurme Geometric Sans 2';
+  src: url('/fonts/HurmeGeometricSans2 Black.woff');
+  font-weight: 900;
+}
+@font-face {
+  font-family: 'Hurme Geometric Sans 2';
+  src: url('/fonts/HurmeGeometricSans2 Bold.woff');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'Hurme Geometric Sans 2';
+  src: url('/fonts/HurmeGeometricSans2 SemiBold.woff');
+  font-weight: 500;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
