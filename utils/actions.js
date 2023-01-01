@@ -3,7 +3,7 @@ import { Referral } from '../models/Referral.js'
 import superjson from 'superjson'
 
 // get all Referrals
-export const getReferrals = async (countryCode) => {
+export const getReferrals = async (countryCode, search, page, limit) => {
   // return await Referral.aggregate([
   //   { $unwind: { path: '$campaign' } },
   //   { $match: { 'campaign.name': countryCode } },
@@ -21,13 +21,29 @@ export const getReferrals = async (countryCode) => {
   // ])
 
   const options = {
-    page: 2,
-    limit: 25,
+    page: page || 1,
+    limit: limit || 25,
+  }
+
+  let searchAggregate = {}
+  if (search !== '' || search !== undefined || search !== null) {
+    searchAggregate = {
+      $text: {
+        $search: search,
+        $caseSensitive: false,
+        $diacriticSensitive: false,
+      },
+    }
   }
 
   var myAggregate = Referral.aggregate([
+    {
+      $match: searchAggregate,
+    },
     { $unwind: { path: '$campaign' } },
-    { $match: { 'campaign.name': countryCode } },
+    {
+      $match: { 'campaign.name': countryCode },
+    },
     {
       $setWindowFields: {
         partitionBy: '$campaign_id',
@@ -42,6 +58,7 @@ export const getReferrals = async (countryCode) => {
   ])
   return Referral.aggregatePaginate(myAggregate, options)
     .then(function (results) {
+      console.log(results)
       return results
     })
     .catch(function (err) {
