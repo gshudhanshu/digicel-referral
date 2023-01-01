@@ -1,15 +1,13 @@
 import superjson from 'superjson'
 import { getReferrals } from '../utils/actions.js'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Pagination from '@choc-ui/paginator'
 
 import classes from '../styles/Leaderboard.module.scss'
 
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Text,
   Box,
   Stack,
@@ -21,12 +19,30 @@ import {
   Button,
   Link,
   Heading,
+  Flex,
 } from '@chakra-ui/react'
-import { useEffect } from 'react'
 import axios from 'axios'
 import SuperJSON from 'superjson'
 
 function leaderboard({ referrals }) {
+  const [refs, setRefs] = useState(referrals)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchString, setSearchString] = useState('')
+  const { countryCode } = useRouter().query
+  const onPageChange = (page) => {
+    page = page === undefined ? 1 : page
+    setCurrentPage(page)
+    axios
+      .get(
+        `/api/${countryCode}?page=${page}&limit=${25}&search=${searchString}`
+      )
+      .then((res) => {
+        setRefs(res.data)
+        console.log(res.data)
+      })
+      .catch((err) => console.log(err))
+  }
+
   // return <></>
   return (
     <>
@@ -73,23 +89,31 @@ function leaderboard({ referrals }) {
               className={classes.search_input}
               placeholder='Name/Phone No.'
               size='md'
+              color={'black'}
+              onChange={(e) => setSearchString(e.target.value)}
             />
             <Button
               className={classes.search_button}
               colorScheme='white'
               variant='solid'
+              onClick={() => {
+                onPageChange()
+              }}
             >
               Search
             </Button>
           </Box>
           <Text textAlign={'center'}>
-            Showing result {referrals.pagingCounter} to{' '}
-            {referrals.page * referrals.limit} of total {referrals.totalDocs}
+            Showing result {refs.pagingCounter} to{' '}
+            {refs.page * refs.limit > refs.totalDocs
+              ? refs.totalDocs
+              : refs.page * refs.limit}{' '}
+            of total {refs.totalDocs}
           </Text>
         </Box>
         <Box width='100%'>
           <VStack className={classes.leaderboard_search_result}>
-            {referrals.docs.map((referral, index) => (
+            {refs.docs.map((referral, index) => (
               <div
                 key={referral.id}
                 className={`${classes.hunters_container}
@@ -124,6 +148,25 @@ function leaderboard({ referrals }) {
             ))}
           </VStack>
         </Box>
+        {/* <Flex w='full' alignItems='center' justifyContent='center' > */}
+        <Pagination
+          defaultCurrent={1}
+          current={currentPage}
+          onChange={(page) => onPageChange(page)}
+          total={refs.totalDocs}
+          pageSize={refs.limit}
+          paginationProps={{
+            display: 'flex',
+            width: '100%',
+            flexWrap: 'wrap',
+            rowGap: '10px',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          pageNeighbours={1}
+          size={'md'}
+        />
+        {/* </Flex> */}
       </Box>
     </>
   )
@@ -135,7 +178,7 @@ export async function getServerSideProps(context) {
     superjson.stringify(await getReferrals(countryCode))
   )
   // const referrals = await getReferrals(countryCode)
-  console.log(referrals)
+  // console.log(referrals)
   return {
     props: { referrals },
   }

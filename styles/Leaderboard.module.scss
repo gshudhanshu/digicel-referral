@@ -94,8 +94,11 @@
   justify-content: center;
   width: 80%;
   max-width: 40em;
-  margin-bottom: 2em !important;
+  // margin-bottom: 2em !important;
   margin-top: 0 !important;
+  :not(:last-child) {
+    margin-bottom: 0em;
+  }
 }
 
 .text_content {
@@ -162,6 +165,7 @@
   .leaderboard_search_result {
     display: flex;
     align-items: center;
+    gap: 2em;
   }
 
   .leaderboard_search_result .gold p,

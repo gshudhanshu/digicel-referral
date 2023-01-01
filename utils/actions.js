@@ -25,8 +25,10 @@ export const getReferrals = async (countryCode, search, page, limit) => {
     limit: limit || 25,
   }
 
-  let searchAggregate = {}
-  if (search !== '' || search !== undefined || search !== null) {
+  let searchAggregate = { _id: { $ne: '' } }
+
+  // console.log(search)
+  if (search !== '' && search !== undefined && search !== null) {
     searchAggregate = {
       $text: {
         $search: search,
@@ -35,6 +37,8 @@ export const getReferrals = async (countryCode, search, page, limit) => {
       },
     }
   }
+
+  // console.log(searchAggregate)
 
   var myAggregate = Referral.aggregate([
     {
@@ -58,7 +62,7 @@ export const getReferrals = async (countryCode, search, page, limit) => {
   ])
   return Referral.aggregatePaginate(myAggregate, options)
     .then(function (results) {
-      console.log(results)
+      // console.log(results)
       return results
     })
     .catch(function (err) {
