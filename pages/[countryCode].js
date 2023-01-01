@@ -1,3 +1,4 @@
+import superjson from 'superjson'
 import { getReferrals } from '../utils/actions.js'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -23,8 +24,10 @@ import {
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import SuperJSON from 'superjson'
 
 function leaderboard({ referrals }) {
+  // return <></>
   return (
     <>
       <Head>
@@ -79,15 +82,14 @@ function leaderboard({ referrals }) {
               Search
             </Button>
           </Box>
-          <Text textAlign={'center'}>Showing result 1 to 25 of total 1000</Text>
+          <Text textAlign={'center'}>
+            Showing result {referrals.pagingCounter} to{' '}
+            {referrals.page * referrals.limit} of total {referrals.totalDocs}
+          </Text>
         </Box>
         <Box width='100%'>
-          <VStack
-            // spacing={4}
-            // align='stretch'
-            className={classes.leaderboard_search_result}
-          >
-            {referrals.map((referral, index) => (
+          <VStack className={classes.leaderboard_search_result}>
+            {referrals.docs.map((referral, index) => (
               <div
                 key={referral.id}
                 className={`${classes.hunters_container}
@@ -120,16 +122,6 @@ function leaderboard({ referrals }) {
                 </div>
               </div>
             ))}
-
-            {/* <Box h='40px' bg='white' padding={'10px'} borderRadius={'10em'}>
-              R. Scantlebury (xxx-4068)
-            </Box>
-            <Box h='40px' bg='white'>
-              2
-            </Box>
-            <Box h='40px' bg='white'>
-              3
-            </Box> */}
           </VStack>
         </Box>
       </Box>
@@ -139,7 +131,11 @@ function leaderboard({ referrals }) {
 
 export async function getServerSideProps(context) {
   const countryCode = context.params.countryCode
-  const referrals = JSON.parse(JSON.stringify(await getReferrals(countryCode)))
+  const referrals = superjson.parse(
+    superjson.stringify(await getReferrals(countryCode))
+  )
+  // const referrals = await getReferrals(countryCode)
+  console.log(referrals)
   return {
     props: { referrals },
   }

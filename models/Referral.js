@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+var aggregatePaginate = require('mongoose-aggregate-paginate-v2')
 
 const referralSchema = new mongoose.Schema(
   {
@@ -16,6 +17,8 @@ const referralSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+referralSchema.plugin(aggregatePaginate)
 
 export const Referral =
   mongoose.models.Referral || mongoose.model('Referral', referralSchema)
